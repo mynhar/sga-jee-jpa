@@ -17,20 +17,23 @@ import javax.naming.NamingException;
  * @author harold
  */
 public class ClienteUsuarioService {
-
-    public static void main(String[] args) {
+        
+    private static final String JNDI_REMOTE = "java:global/sga-jee-jpa/UsuarioServiceImpl!com.gm.sga.servicio.UsuarioServiceRemote";
+        
+    public static void main(String[] args) throws NamingException {
+  
         System.out.println("Iniciando llamada al EJB desde el cliente\n");
-        try {
-            Context jndi = new InitialContext();            
-            UsuarioServiceRemote usuarioService = (UsuarioServiceRemote) jndi.lookup("java:global/sga-jee-jpa/UsuarioServiceImpl!com.gm.sga.servicio.UsuarioServiceRemote");
-            List<Usuario> usuarios = usuarioService.listarUsuarios();
-            for (Usuario usuario : usuarios) {
-                System.out.println(usuario);
-            }
-            System.out.println("\nFin llamada al EJB desde el cliente");
-        } catch (NamingException e) {
-            e.printStackTrace(System.out);
+          
+        Context jndi = new InitialContext();
+        UsuarioServiceRemote usuarioService = (UsuarioServiceRemote) jndi.lookup(JNDI_REMOTE);
+          
+        List<Usuario> usuarios = usuarioService.listarUsuarios();
+        
+        for (Usuario usuario : usuarios) {
+            System.out.println(usuario);
         }
+        System.out.println("\nFin llamada al EJB desde el cliente");
+
     }
 
 }
